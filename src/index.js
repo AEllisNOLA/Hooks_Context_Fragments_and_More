@@ -4,17 +4,21 @@ import * as serviceWorker from './serviceWorker';
 
 const App = (props) => {
     let [count, setCount] = useState(props.count)
+    let [text, setText] = useState('')
+
 
     const increment = () => setCount(count++)
     const decrement = () => setCount(count--)
     const reset = () => setCount(0)
+    const onTextChange = (e) => setText(e.target.value)
 
     return (
         <div>
-            <p>The current count is {count}.</p>
+            <p>The current {text || 'count'} is {count}.</p>
             <button onClick={increment}>+1</button>
             <button onClick={decrement}>-1</button>
             <button onClick={reset}>Reset</button>
+            <input value={text} onChange={onTextChange} />
         </div>
     )
 }
