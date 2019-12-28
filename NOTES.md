@@ -17,3 +17,7 @@
 - Avoid combining multiple pieces of state inside of a useState call via an object. Not only does it create convuluted dot-chaining, but it does not track multiple pieces of state. useState() does not merge the objects - they are completely replaced so one state works properly while the other disappears. It makes things less error-prone and allows large state objects to be broken up into individual values.
 
 - Summary: It is no longer recommended to store all state in a single object. Call useState() multiple times.
+
+## 19.193 - The useEffect Hook
+- Just as useState allowed us to add state to functional components, useEffect allows us to use something similar to lifecycle methods in our functional components. 
+- It is similar to componentDidMount and componentDidUpdate. It runs once right away, and after changes to the state or props. It code to be run when component state or props is updated.

@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
 const NoteApp = () => {
-    const [notes, setNotes] = useState([])
+    const notesData = JSON.parse(localStorage.getItem('notes'))
+    const [notes, setNotes] = useState(notesData || [])
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
+
+    
+
+    
 
     const changeTitle = (e) => setTitle(e.target.value)
     const changeBody = (e) => setBody(e.target.value)
@@ -26,6 +31,10 @@ const NoteApp = () => {
         setNotes(notes.filter((note) => note.title !== title))
     }
 
+    useEffect(() => {
+        localStorage.setItem('notes', JSON.stringify(notes))
+    })
+
     return (
         <div>
             <h1>Notes</h1>
@@ -42,17 +51,22 @@ const NoteApp = () => {
             )}
             <p>Add Note:</p>
             <form onSubmit={addNote}>
-                <input value={title} onChange={changeTitle} />
-                <textarea value={body} onChange={changeBody} />
+                <input placeholder='Title' value={title} onChange={changeTitle} />
+                <textarea placeholder='Note' value={body} onChange={changeBody} />
                 <button>Add note</button>
             </form>
         </div>
     )
 }
-/* 
-const App = (props) => {
+
+/* const App = (props) => {
     let [count, setCount] = useState(props.count)
     let [text, setText] = useState('')
+
+    useEffect(() => {
+        console.log('useEffect ran.')
+        document.title = count
+    })
 
 
     const increment = () => setCount(count++)
@@ -69,7 +83,7 @@ const App = (props) => {
             <input value={text} onChange={onTextChange} />
         </div>
     )
-} 
+}
 
 App.defaultProps = {
     count: 0
@@ -77,7 +91,7 @@ App.defaultProps = {
 */
 
 
-ReactDOM.render(<NoteApp />, document.getElementById('root'));
+ReactDOM.render(<NoteApp />, document.getElementById('root')); 
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
