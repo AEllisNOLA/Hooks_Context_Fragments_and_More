@@ -1,99 +1,11 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-
-const notesReducer = (state, action) => {
-    switch (action.type) {
-        case 'POPULATE_NOTES':
-            return action.notes
-        case 'ADD_NOTE':
-            return [...state, { title: action.title, body: action.body }]
-        case 'REMOVE_NOTE':
-            return state.filter((note) => note.title !== action.title)
-        default:
-            return state
-    }
-}
-
-const NoteApp = () => {
-    const [notes, notesDispatch] = useReducer(notesReducer, [])
-    const [title, setTitle] = useState('')
-    const [body, setBody] = useState('')
-
-    const changeTitle = (e) => setTitle(e.target.value)
-    const changeBody = (e) => setBody(e.target.value)
-
-    const addNote = (e) => {
-        e.preventDefault();
-        /*  setNotes([
-             ...notes,
-             { title, body }
- 
-         ]) */
-        notesDispatch({ type: 'ADD_NOTE', title, body })
-        setTitle('')
-        setBody('')
-    }
+import NoteApp from './components/NoteApp'
 
 
-    const removeNote = (title) => {
-        //       setNotes(notes.filter((note) => note.title !== title))
-        notesDispatch({
-            type: 'REMOVE_NOTE',
-            title
-        })
-    }
-    // similar to component did mount
-    useEffect(() => {
-        const notes = JSON.parse(localStorage.getItem('notes'))
-        if (notes) {
-            notesDispatch({ type: 'POPULATE_NOTES', notes })
-            //          setNotes(notesData)
-
-        }
-    }, [])
-
-    // similar to componentDidUpdate
-    useEffect(() => {
-        localStorage.setItem('notes', JSON.stringify(notes))
-    }, [notes])
 
 
-    return (
-        <div>
-            <h1>Notes</h1>
-            {notes.map((note) => (
-                <Note key={note.title} note={note} removeNote={removeNote} />
-            )
-            )}
-            <p>Add Note:</p>
-            <form onSubmit={addNote}>
-                <input placeholder='Title' value={title} onChange={changeTitle} />
-                <textarea placeholder='Note' value={body} onChange={changeBody} />
-                <button>Add note</button>
-            </form>
-        </div>
-    )
-}
-
-const Note = ({ note, removeNote }) => {
-    useEffect(() => {
-        console.log('setting up effect')
-
-        return () => {
-            console.log('Cleaning up effect')
-        }
-    }, [])
-
-    return (
-        <div>
-            <h3>{note.title}</h3>
-            <p>{note.body}</p>
-            <button onClick={() => removeNote(note.title)}>Remove</button>
-        </div>
-
-    )
-}
 
 ReactDOM.render(<NoteApp />, document.getElementById('root'));
 

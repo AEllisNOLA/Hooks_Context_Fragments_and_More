@@ -74,7 +74,14 @@ const notesReducer = (state, action) => {
 }
 ```
 
-Then you can call useReducer() with 2 arguments: the defined reducer function and initial state.
+Then you can call useReducer() with 2 arguments: the defined reducer function and initial state. useReducer returns an array with state and dispatch function
+
 ```
-useReducer(notesReducer, [])
+    const [notes, notesDispatch] = useReducer(notesReducer, [])
 ```
+
+- if state is simple, you can use useState. If it is complicated, like an object, you can use useReducer() and store the logic in a different function
+
+## 19.197 - The Context API
+- In react, components can become very tightly bound. They can pass a ton of props around, making all of the components rely on each other, messing with the reusability goal. Reduxls Provider component connect() function helped to fix that. React now has similar functionality baked in with the Context API.
+
