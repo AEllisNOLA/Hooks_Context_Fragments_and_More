@@ -21,3 +21,27 @@
 ## 19.193 - The useEffect Hook
 - Just as useState allowed us to add state to functional components, useEffect allows us to use something similar to lifecycle methods in our functional components. 
 - It is similar to componentDidMount and componentDidUpdate. It runs once right away, and after changes to the state or props. It code to be run when component state or props is updated.
+
+## 19.194 - useEffect Dependencies
+- useEffect can take an array as a second argument to dictate when it runs. It is not required.
+
+- useEffect can be used multiple times. Multiples will run in the order they are defined.
+
+- In the beneath example, useEffect will run any time count is involved
+
+```
+useEffect(() => {
+        console.log('useEffect ran.')
+        document.title = count
+    }, [count]
+)
+```
+
+- In this example, it will only run its initial time (similar to componentDidMount), but never again because there are no dependencies to trigger a new run.
+
+```
+useEffect(() => {
+        console.log('useEffect will only run once')
+    }, []
+)
+```
