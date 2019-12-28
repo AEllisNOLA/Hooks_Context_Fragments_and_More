@@ -25,15 +25,16 @@ const NoteApp = () => {
     const removeNote = (title) => {
         setNotes(notes.filter((note) => note.title !== title))
     }
-
+    // similar to component did mount
     useEffect(() => {
         console.log('getting notes')
         const notesData = JSON.parse(localStorage.getItem('notes'))
-        if(notesData) {
+        if (notesData) {
             setNotes(notesData)
         }
     }, [])
 
+    // similar to componentDidUpdate
     useEffect(() => {
         localStorage.setItem('notes', JSON.stringify(notes))
     }, [notes])
@@ -43,14 +44,7 @@ const NoteApp = () => {
         <div>
             <h1>Notes</h1>
             {notes.map((note) => (
-                <div key={note.title}>
-                    <div>
-                        <h3>{note.title}</h3>
-                        <p>{note.body}</p>
-                    </div>
-
-                    <button onClick={() => removeNote(note.title)}>Remove</button>
-                </div>
+                <Note key={note.title} note={note} removeNote={removeNote} />
             )
             )}
             <p>Add Note:</p>
@@ -63,41 +57,24 @@ const NoteApp = () => {
     )
 }
 
-/* const App = (props) => {
-    let [count, setCount] = useState(props.count)
-    let [text, setText] = useState('')
-
+const Note = ({note, removeNote}) => {
     useEffect(() => {
-        console.log('useEffect ran.')
-        document.title = count
-    }, [count]
-    )
+        console.log('setting up effect')
 
-    useEffect(() => {
-        console.log('This should only run once')
+        return () => {
+            console.log('Cleaning up effect')
+        }
     }, [])
-
-
-    const increment = () => setCount(count++)
-    const decrement = () => setCount(count--)
-    const reset = () => setCount(0)
-    const onTextChange = (e) => setText(e.target.value)
 
     return (
         <div>
-            <p>The current {text || 'count'} is {count}.</p>
-            <button onClick={increment}>+1</button>
-            <button onClick={decrement}>-1</button>
-            <button onClick={reset}>Reset</button>
-            <input value={text} onChange={onTextChange} />
+            <h3>{note.title}</h3>
+            <p>{note.body}</p>
+            <button onClick={() => removeNote(note.title)}>Remove</button>
         </div>
+
     )
 }
-
-App.defaultProps = {
-    count: 0
-} */
-
 
 ReactDOM.render(<NoteApp />, document.getElementById('root'));
 
