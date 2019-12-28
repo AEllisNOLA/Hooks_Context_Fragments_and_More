@@ -45,3 +45,36 @@ useEffect(() => {
     }, []
 )
 ```
+
+## 19.195 - Cleaning Up Effects
+- useEffect equivalents to componentDidMount and componentDidUpdate were shown above. You can also use something similar to componentDidUnmount. To register a function to clean up an effect, you must return a function from the function you passed to useEffect
+
+```
+useEffect(() => {
+        console.log('setting up effect')
+
+        return () => {
+            console.log('Cleaning up effect')
+        }
+    }, [])
+```
+
+## 19.196 - The useReducer Hook
+- The useReducer hook allows a component to have access to another component's data without having to pass them down as props, similar to the connect() function in Redux.
+
+- A useReducer() function needs to be defined before it can be used. Similar to Redux reducers.
+```
+const notesReducer = (state, action) => {
+    switch(action.type) {
+        case 'POPULATE_NOTES':
+            return action.notes
+        default:
+            return state
+    }
+}
+```
+
+Then you can call useReducer() with 2 arguments: the defined reducer function and initial state.
+```
+useReducer(notesReducer, [])
+```

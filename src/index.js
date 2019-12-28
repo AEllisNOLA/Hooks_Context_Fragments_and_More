@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
+const notesReducer = (state, action) => {
+    switch (action.type) {
+        case 'POPULATE_NOTES':
+            return action.notes
+        case 'ADD_NOTE':
+            return [...state, { title: action.title, body: action.body }]
+        case 'REMOVE_NOTE':
+            return state.filter((note) => note.title !== action.title)
+        default:
+            return state
+    }
+}
+
 const NoteApp = () => {
-    const [notes, setNotes] = useState([])
+    const [notes, notesDispatch] = useReducer(notesReducer, [])
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
 
@@ -12,25 +25,31 @@ const NoteApp = () => {
 
     const addNote = (e) => {
         e.preventDefault();
-        setNotes([
-            ...notes,
-            { title, body }
-
-        ])
+        /*  setNotes([
+             ...notes,
+             { title, body }
+ 
+         ]) */
+        notesDispatch({ type: 'ADD_NOTE', title, body })
         setTitle('')
         setBody('')
     }
 
 
     const removeNote = (title) => {
-        setNotes(notes.filter((note) => note.title !== title))
+        //       setNotes(notes.filter((note) => note.title !== title))
+        notesDispatch({
+            type: 'REMOVE_NOTE',
+            title
+        })
     }
     // similar to component did mount
     useEffect(() => {
-        console.log('getting notes')
-        const notesData = JSON.parse(localStorage.getItem('notes'))
-        if (notesData) {
-            setNotes(notesData)
+        const notes = JSON.parse(localStorage.getItem('notes'))
+        if (notes) {
+            notesDispatch({ type: 'POPULATE_NOTES', notes })
+            //          setNotes(notesData)
+
         }
     }, [])
 
@@ -57,7 +76,7 @@ const NoteApp = () => {
     )
 }
 
-const Note = ({note, removeNote}) => {
+const Note = ({ note, removeNote }) => {
     useEffect(() => {
         console.log('setting up effect')
 
