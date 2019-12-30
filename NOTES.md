@@ -18,6 +18,8 @@
 
 - Summary: It is no longer recommended to store all state in a single object. Call useState() multiple times.
 
+- NOTE: The above is untrue if the state changes together, such as the x/y coordinates of a mouse move.
+
 ## 19.193 - The useEffect Hook
 - Just as useState allowed us to add state to functional components, useEffect allows us to use something similar to lifecycle methods in our functional components. 
 - It is similar to componentDidMount and componentDidUpdate. It runs once right away, and after changes to the state or props. It code to be run when component state or props is updated.
@@ -110,4 +112,15 @@ export { NotesContext as default }
 
 so AddNoteForm and NoteList both get the context.
 
-- 3) set value prop on <NotesContext.Provider>. Then, if a child component uses that thing, go to that component and give it access with one line: useContext(NotesContext)
+- 3) set value prop on <NotesContext.Provider>. Then, if a child component uses that thing, go to that component and give it access with one line: useContext(NotesContext). Deconstruct whatever it is you need, so something like:
+
+```
+const {dispatch} = useContext(NotesContext)
+```
+
+## 19.199 - Fragments
+- Instead of having a root <div></div> that needlessly shows up, you can use fragments, which are <></>
+
+## 19.200 - Custom Hooks
+- A custom hook is a function defined that uses a built-in React hook behind-the-scenes.
+- It is a naming convention to start a hook name with "use"
